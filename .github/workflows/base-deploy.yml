@@ -1,0 +1,19 @@
+name: learn-github-actions
+on: [push]
+
+jobs:
+  job-one:
+    runs-on: ubuntu-latest
+    steps:
+      - name: testing connection to mywish
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.MYWISH_DEV_HOST }}
+          username: ${{ secrets.MYWISH_DEV_USERNAME }}
+          key: ${{ secrets.MYWISH_PRIVATE_KEY }}
+          port: 22
+          script: |
+            cd gh-actions
+            git pull origin dev
+            git status
+            sudo docker-compose up -d --build
